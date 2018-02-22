@@ -1,0 +1,12 @@
+﻿L:\Visual Studios\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(387,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (03.Asteroids.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  Player.cpp
+c:\users\hoaxshark\desktop\test\03.asteroids\game\player.cpp(43): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\hoaxshark\desktop\test\03.asteroids\game\player.cpp(48): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\hoaxshark\desktop\test\03.asteroids\game\player.cpp(53): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\hoaxshark\desktop\test\03.asteroids\game\player.cpp(58): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  GameStates.cpp
+  Generating Code...
+  03.Asteroids.vcxproj -> C:\Users\HoaxShark\Desktop\Test\03.Asteroids\Debug\CottonLife.exe
+  0 File(s) copied
+  C:\Users\HoaxShark\Desktop\Test\03.Asteroids\resources\font.bmp
+  1 File(s) copied
