@@ -1,6 +1,8 @@
 #pragma once
 #include "BaseObject.h"
-#include "Bullet.h"
+#include "Raindrop.h"
+#include "SDL.h"
+
 #include <list>
 
 class Player : public BaseObject
@@ -10,10 +12,10 @@ public:
 
 	void Init();
 	void Update();
-	void UpdateBullets();
+	//void UpdateRaindrops();
 
 	void Draw();
-	//void DrawBullets();
+	//void DrawRaindrops();
 
 	void OnCollided();
 
@@ -22,12 +24,17 @@ public:
 	bool canCollide();
 	void SetInvincible();
 
+	int GetPlayerScale();
+	void SetPlayerScale(int newScale);
+
 	int playerVelocityX;
 	int playerVelocityY;
 	int playerSpeed;
+	int playerScale;
 
 private:
 	bool bDisplayThrust;
 	//int lastShotTime;	
 	int invincibleTicker;
+	SDL_Renderer* mainRenderer;
 };

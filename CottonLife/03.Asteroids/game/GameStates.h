@@ -1,5 +1,7 @@
 #pragma once
 #include "CottonGame.h"
+#include "Player.h"
+#include "../engine/Timer.h"
 #include "../engine/StateMachine.h"
 
 class GameState_Attract: public StateMachine::State
@@ -26,7 +28,7 @@ public:
 	virtual const char* Name() { return Label;}
 };
 
-class GameState_CreateWave: public StateMachine::PausibleState
+class GameState_CreateRain: public StateMachine::PausibleState
 {
 public:
 	void Init();
@@ -34,7 +36,7 @@ public:
 	void Draw();
 	void Exit();
 
-	static constexpr const char* Label = "Create Wave";
+	static constexpr const char* Label = "Create Rain";
 	virtual const char* Name() { return Label;}
 };
 
@@ -53,6 +55,9 @@ public:
 class GameState_Play: public StateMachine::PausibleState
 {
 public:
+	Player ThePlayer;
+	Timer TheTimer;
+	Raindrop TheRaindrop;
 	void Init();
 	bool Update();
 	void Draw();
@@ -63,7 +68,7 @@ public:
 
 };
 
-class GameState_EndOfWave: public StateMachine::PausibleState
+/**class GameState_EndOfWave: public StateMachine::PausibleState
 {
 public:
 	void Init();
@@ -74,7 +79,7 @@ public:
 	static constexpr const char* Label = "End Of Wave";
 	virtual const char* Name() { return Label; }
 
-};
+};*/
 
 class GameState_GameOver: public StateMachine::PausibleState
 {

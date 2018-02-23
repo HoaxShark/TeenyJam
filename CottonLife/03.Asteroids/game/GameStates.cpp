@@ -27,29 +27,29 @@ void GameState_Attract::Draw()
 {
 	CottonGame::Get()->Draw();
 
-	CottonGame::Get()->GUIPrint(400,50,"Asteroids\nGame Attract"); 
+	//CottonGame::Get()->GUIPrint(400,50,"CottonLife\nGame Attract"); 
 
 	Renderer::Get()->debugPrinter->SetJustification(DebugPrinter::Justify_Centre);
-	Renderer::Get()->debugPrinter->SetScale(10, 10);
-	Renderer::Get()->debugPrinter->Print(400, 100, RGBTOCOLOR(255, 255, 255), "ASTEROIDS");
+	Renderer::Get()->debugPrinter->SetScale(1, 1);
+	Renderer::Get()->debugPrinter->Print(50, 5, RGBTOCOLOR(255, 255, 255), "CottonLife");
 	Renderer::Get()->debugPrinter->SetScale(1, 1);
 	Renderer::Get()->debugPrinter->SetJustification(DebugPrinter::Justify_Left);
 
 
-	Renderer::Get()->DrawRect(315,255,200,110,RGBTOCOLOR(255,255,255));
-	Renderer::Get()->DrawRect(320,260,190,100,RGBTOCOLOR(0,0,0));
+	/**Renderer::Get()->DrawRect(315,255,130,100,RGBTOCOLOR(255,255,255));
+	Renderer::Get()->DrawRect(320,260,120,90,RGBTOCOLOR(0,0,0));
 
-	Renderer::Get()->debugPrinter->Print(325,270,RGBTOCOLOR(255,255,255),"LEFT - rotate left");
-	Renderer::Get()->debugPrinter->Print(325,290, RGBTOCOLOR(255, 255, 255), "RIGHT - rotate right");
-	Renderer::Get()->debugPrinter->Print(325,310, RGBTOCOLOR(255, 255, 255), "UP - thrust");
-	Renderer::Get()->debugPrinter->Print(325,330, RGBTOCOLOR(255, 255, 255), "LEFT CTRL - fire");
+	Renderer::Get()->debugPrinter->Print(325,270,RGBTOCOLOR(255,255,255),"LEFT - MOVE LEFT");
+	Renderer::Get()->debugPrinter->Print(325,290, RGBTOCOLOR(255, 255, 255), "RIGHT - MOVE RIGHT");
+	Renderer::Get()->debugPrinter->Print(325,310, RGBTOCOLOR(255, 255, 255), "UP - MOVE UP");
+	Renderer::Get()->debugPrinter->Print(325,330, RGBTOCOLOR(255, 255, 255), "DOWN - MOVE DOWN");*/
 
 	if(frameCount%20 > 10)
 	{
 		Renderer::Get()->debugPrinter->SetJustification(DebugPrinter::Justify_Centre);
-		Renderer::Get()->debugPrinter->SetScale(2, 2);
-		Renderer::Get()->debugPrinter->Print(400, 500, RGBTOCOLOR(255, 255, 255), "Press SPACE to play");
 		Renderer::Get()->debugPrinter->SetScale(1, 1);
+		Renderer::Get()->debugPrinter->Print(50, 40, RGBTOCOLOR(255, 255, 255), "SPACE");
+		Renderer::Get()->debugPrinter->Print(50, 50, RGBTOCOLOR(255, 255, 255), "to play");
 		Renderer::Get()->debugPrinter->SetJustification(DebugPrinter::Justify_Left);
 	}
 }
@@ -70,7 +70,7 @@ void GameState_StartGame::Init()
 
 bool GameState_StartGame::Update()
 {
-	CottonGame::Get()->stateMachine.SetState(GameState_CreateWave::Label);
+	CottonGame::Get()->stateMachine.SetState(GameState_CreateRain::Label);
 	return true;
 }
 void GameState_StartGame::Draw()
@@ -88,12 +88,12 @@ void GameState_StartGame::Exit()
 
 ************************************************************************/
 
-void GameState_CreateWave::Init()
+void GameState_CreateRain::Init()
 {
-	CottonGame::Get()->CreateRocks();
+	CottonGame::Get()->CreateRain();
 }
 
-bool GameState_CreateWave::Update()
+bool GameState_CreateRain::Update()
 {
 	if(CottonGame::Get()->IsPlayerActive() == false)
 	{
@@ -105,12 +105,12 @@ bool GameState_CreateWave::Update()
 	}
 	return true;
 }
-void GameState_CreateWave::Draw()
+void GameState_CreateRain::Draw()
 {
 	CottonGame::Get()->Draw();
 }
 
-void GameState_CreateWave::Exit()
+void GameState_CreateRain::Exit()
 {
 
 }
@@ -161,17 +161,27 @@ void GameState_PlacePlayer::Exit()
 
 void GameState_Play::Init()
 {
+	TheTimer.Start();
 }
 
 bool GameState_Play::Update()
-{
+{	
 	CottonGame::Get()->Update();
-	
-	if(CottonGame::Get()->rockList.size() == 0)
+	float currentTime = TheTimer.GetTime();
+
+	if (TheRaindrop.GetDelay() <= currentTime)
 	{
-		CottonGame::Get()->stateMachine.SetState(GameState_EndOfWave::Label);
+		CottonGame::Get()->CreateRain();
+		TheTimer.Stop();
+		TheTimer.Start();
 	}
-	else
+
+	
+	if(ThePlayer.GetPlayerScale() >= 2) // if player is too small move to end game
+	{
+		CottonGame::Get()->stateMachine.SetState(GameState_GameOver::Label);
+	}
+	/**else
 	{
 		if(CottonGame::Get()->IsPlayerActive() == false)
 		{
@@ -184,7 +194,7 @@ bool GameState_Play::Update()
 				CottonGame::Get()->stateMachine.SetState(GameState_GameOver::Label);
 			}
 		}
-	}
+	}*/
 
 
 	return true;
@@ -204,9 +214,9 @@ void GameState_Play::Exit()
 
 ************************************************************************/
 
-void GameState_EndOfWave::Init()
+/**void GameState_EndOfWave::Init()
 {
-	CottonGame::Get()->CreateRocks();
+	CottonGame::Get()->CreateRain();
 }
 
 bool GameState_EndOfWave::Update()
@@ -224,7 +234,7 @@ void GameState_EndOfWave::Draw()
 void GameState_EndOfWave::Exit()
 {
 
-}
+}*/
 
 /***********************************************************************
 
@@ -253,7 +263,7 @@ void GameState_GameOver::Draw()
 
 	if(/**(CottonGame::Get()->explosionManager.ActiveCount() == 0) && **/(frameCount > (2*30)))
 	{
-		CottonGame::Get()->GUIPrint(400,300,"Game Over\n");
+		CottonGame::Get()->GUIPrint(25,10,"Game Over\n");
 	}
 }
 

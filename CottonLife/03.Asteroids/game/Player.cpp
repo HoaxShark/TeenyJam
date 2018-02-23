@@ -18,12 +18,12 @@ void Player::Init()
 	//Velocity = Vector2(0,5);
 	//playerVelocityX = 0; // Used for X repositioning
 	//playerVelocityY = 0; // Used for Y repositioning
-	Velocity = Vector2(0, 0); // velocity of the player X and Y
+	Velocity = Vector2(0.0f, 0.0f); // velocity of the player X and Y
 	playerSpeed = 1;
 	//angle =  0;
 
 
-	float playerScale = 40; // used to scale the image of the player and the collider
+	playerScale = 40; // used to scale the image of the player and the collider
 	collider.Set(Position, (playerScale/2));
 	
 	//lastShotTime = 0;	
@@ -62,12 +62,12 @@ void Player::Update()
 	{
 		if(Renderer::Get()->GetFrameCount() - lastShotTime > 10)
 		{
-			Bullet* b = new Bullet();
+			Raindrop* b = new Raindrop();
 
-			CottonGame::Get()->bulletList.push_back(b);
+			CottonGame::Get()->RaindropList.push_back(b);
 			
-			Vector2 bulletPos = Position + Vector2::Transform(Vector2(0,20),Matrix::CreateRotationZ(angle));
-			b->Init(bulletPos, angle);
+			Vector2 RaindropPos = Position + Vector2::Transform(Vector2(0,20),Matrix::CreateRotationZ(angle));
+			b->Init(RaindropPos, angle);
 
 			lastShotTime = Renderer::Get()->GetFrameCount();
 		}
@@ -139,9 +139,9 @@ void Player::Update()
 	BaseObject::Update();
 }
 
-/**void Player::UpdateBullets()
+/**void Player::UpdateRaindrops()
 {
-	//bulletList.Update();
+	//RaindropList.Update();
 
 	
 }**/
@@ -149,7 +149,7 @@ void Player::Update()
 void Player::Draw()
 {
 	{
-		Vector2 Points[4];
+		/**Vector2 Points[4];
 
 		Points[0] = Vector2(0, 20);
 		Points[1] = Vector2(10,-10);
@@ -164,7 +164,7 @@ void Player::Draw()
 			Points[i] = Vector2::Transform(Points[i],transform);
 		}
 		
-		unsigned int index[] = {0,1 ,1,2 ,2,3 ,3,0};
+		unsigned int index[] = {0,1 ,1,2 ,2,3 ,3,0};*/
 
 		bool drawPlayer = true;
 
@@ -175,11 +175,13 @@ void Player::Draw()
 
 		if (drawPlayer == true)
 		{
-			for (unsigned int iIndex = 0; iIndex < ARRAY_LENGTH(index); iIndex += 2)
+			Renderer::Get()->DrawRect(Position.x, Position.y, playerScale, playerScale, RGBTOCOLOR(255, 182, 193));
+			BaseObject::Draw();
+			/**for (unsigned int iIndex = 0; iIndex < ARRAY_LENGTH(index); iIndex += 2)
 			{
 				Renderer::Get()->DrawLine(Points[index[iIndex]], RGBTOCOLOR(255, 255, 255)
 					, Points[index[iIndex + 1]], RGBTOCOLOR(255, 255, 255));
-			}
+			}*/
 		}		
 	}
 
@@ -208,7 +210,7 @@ void Player::Draw()
 				, Points[index[iIndex + 1]], RGBTOCOLOR(255, 255, 255));
 		}
 
-	}**/
+	}*/
 
 	BaseObject::Draw();
 }
@@ -251,4 +253,14 @@ bool Player::canCollide()
 void Player::SetInvincible()
 {
 	invincibleTicker = 120;
+}
+
+int Player::GetPlayerScale()
+{
+	return playerScale;
+}
+
+void Player::SetPlayerScale(int newScale)
+{
+	playerScale = newScale;
 }

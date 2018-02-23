@@ -1,5 +1,5 @@
 #pragma once
-#include "Rock.h"
+//#include "Rock.h"
 #include "Player.h"
 //#include "ExplosionManager.h"
 #include "../engine/StateMachine.h"
@@ -10,8 +10,8 @@
 class CottonGame : public Singleton<CottonGame>
 {
 public:	
-	std::list<Rock*> rockList;
-	std::list<Bullet*> bulletList;
+	//std::list<Rock*> rockList;
+	std::list<Raindrop*> RaindropList;
 
 	Player ThePlayer;
 	bool bPlayerActive;
@@ -21,7 +21,7 @@ public:
 
 	//ExplosionManager explosionManager;
 
-	void CreateRocks();
+	void CreateRain();
 	//void ExplodeRock(Rock& rock);
 
 	bool IsPlayerActive();

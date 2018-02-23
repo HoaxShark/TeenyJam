@@ -31,7 +31,7 @@
     <ClCompile Include="engine\Vector3.cpp" />
     <ClCompile Include="game\CottonGame.cpp" />
     <ClCompile Include="game\BaseObject.cpp" />
-    <ClCompile Include="game\Bullet.cpp" />
+    <ClCompile Include="game\Raindrop.cpp" />
     <ClCompile Include="game\ExplosionManager.cpp" />
     <ClCompile Include="game\GameStates.cpp" />
     <ClCompile Include="game\Rock.cpp" />
@@ -51,7 +51,7 @@
     <ClInclude Include="engine\Vector3.h" />
     <ClInclude Include="game\CottonGame.h" />
     <ClInclude Include="game\BaseObject.h" />
-    <ClInclude Include="game\Bullet.h" />
+    <ClInclude Include="game\Raindrop.h" />
     <ClInclude Include="game\Collider.h" />
     <ClInclude Include="game\ExplosionManager.h" />
     <ClInclude Include="game\GameStates.h" />

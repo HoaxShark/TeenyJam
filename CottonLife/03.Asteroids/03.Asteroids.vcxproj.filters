@@ -36,9 +36,6 @@
     <ClInclude Include="game\BaseObject.h">
       <Filter>game</Filter>
     </ClInclude>
-    <ClInclude Include="game\Bullet.h">
-      <Filter>game</Filter>
-    </ClInclude>
     <ClInclude Include="game\Collider.h">
       <Filter>game</Filter>
     </ClInclude>
@@ -66,6 +63,9 @@
     <ClInclude Include="game\Player.h">
       <Filter>game</Filter>
     </ClInclude>
+    <ClInclude Include="game\Raindrop.h">
+      <Filter>game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="engine\bitmap.cpp">
@@ -87,9 +87,6 @@
       <Filter>engine</Filter>
     </ClCompile>
     <ClCompile Include="game\BaseObject.cpp">
-      <Filter>game</Filter>
-    </ClCompile>
-    <ClCompile Include="game\Bullet.cpp">
       <Filter>game</Filter>
     </ClCompile>
     <ClCompile Include="game\ExplosionManager.cpp">
@@ -115,6 +112,9 @@
       <Filter>game</Filter>
     </ClCompile>
     <ClCompile Include="game\Player.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="game\Raindrop.cpp">
       <Filter>game</Filter>
     </ClCompile>
   </ItemGroup>

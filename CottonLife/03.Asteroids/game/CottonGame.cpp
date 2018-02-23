@@ -52,7 +52,7 @@ void CottonGame::Init()
 	ThePlayer.Init();
 	bPlayerActive = false;
 
-	CreateRocks();
+	CreateRain();
 	ResetScore();	
 
 	//explosionManager.Clear();
@@ -62,12 +62,11 @@ bool CottonGame::OnOneTimeInit()
 	Init();
 
 	stateMachine.AddState(GameState_Attract::Label, new GameState_Attract());
-
 	stateMachine.AddState(GameState_StartGame::Label, new GameState_StartGame());
-	stateMachine.AddState(GameState_CreateWave::Label, new GameState_CreateWave());
+	stateMachine.AddState(GameState_CreateRain::Label, new GameState_CreateRain());
 	stateMachine.AddState(GameState_PlacePlayer::Label, new GameState_PlacePlayer());
 	stateMachine.AddState(GameState_Play::Label, new GameState_Play());
-	stateMachine.AddState(GameState_EndOfWave::Label, new GameState_EndOfWave());
+	//stateMachine.AddState(GameState_EndOfWave::Label, new GameState_EndOfWave());
 	stateMachine.AddState(GameState_GameOver::Label, new GameState_GameOver());
 	stateMachine.AddState(PauseGameState::Label, new PauseGameState());
 
@@ -86,32 +85,19 @@ void CottonGame::Update()
 		
 	ThePlayer.SetCollided(false);
 	
-	for (std::list<Rock*>::iterator rock = rockList.begin(); rock != rockList.end(); rock++)
+	for (std::list<Raindrop*>::iterator Raindrop = RaindropList.begin(); Raindrop != RaindropList.end(); Raindrop++)
 	{
-		if((*rock)->IsInUse() == true)
+		if((*Raindrop)->IsInUse() == true)
 		{			
-			for (std::list<Bullet*>::iterator bullet = bulletList.begin(); bullet != bulletList.end(); bullet++)
-			{
-				if( ((*bullet)->IsInUse() == true) && ((*rock)->IsInUse() == true))
-				{
-					if((*bullet)->CollidesWith((*rock)) == true)
-					{
-						//ExplodeRock(*(*rock));
-						
-						(*bullet)->SetInUse(false);
-					}
-				}
-			}
-
 			if(IsPlayerActive() == true)
 			{
-				if(((*rock)->IsInUse() == true) && (ThePlayer.CollidesWith((*rock) ) == true))
+				if(((*Raindrop)->IsInUse() == true) && (ThePlayer.CollidesWith((*Raindrop) ) == true))
 				{
 					if (ThePlayer.canCollide() == true)
 					{
-						ThePlayer.SetCollided(true);						
-					}
-					//ExplodeRock(*(*rock));					
+						ThePlayer.SetCollided(true);
+						(*Raindrop)->SetInUse(false);
+					}					
 				}
 			}
 		}
@@ -119,48 +105,29 @@ void CottonGame::Update()
 
 	if(ThePlayer.GetCollided() == true)
 	{
-		ThePlayer.OnCollided();		
+		ThePlayer.OnCollided();
+		int oldScale = ThePlayer.GetPlayerScale(); // on colide reduce scale of player
+		oldScale -= 1;
+		ThePlayer.SetPlayerScale(oldScale);
 		//explosionManager.Add(ThePlayer.GetPosition(),ThePlayer.GetLineList());
 
 		bPlayerActive = false;
-		Players--;
+		//Players--;
 	}
-
-	std::list<Rock*>::iterator rock = rockList.begin();
-	while (rock != rockList.end())
+	std::list<Raindrop*>::iterator Raindrop = RaindropList.begin();
+	while (Raindrop != RaindropList.end())
 	{
-		if ((*rock)->IsInUse() == true)
+		if ((*Raindrop)->IsInUse() == true)
 		{
-			(*rock)->Update();
-			rock++;
+			(*Raindrop)->Update();
+			Raindrop++;
 		}
 		else
 		{
-			delete (*rock);
-			rock = rockList.erase(rock);
+			delete (*Raindrop);
+			Raindrop = RaindropList.erase(Raindrop);
 		}
 	}
-
-
-	std::list<Bullet*>::iterator bullet = bulletList.begin();
-	while (bullet != bulletList.end())
-	{
-		if ((*bullet)->IsInUse() == true)
-		{
-			(*bullet)->Update();
-			bullet++;
-		}
-		else
-		{
-			delete(*bullet);
-			bullet = bulletList.erase(bullet);
-		}
-	}
-
-	
-
-
-	//explosionManager.Update();
 }
 
 void CottonGame::Draw()
@@ -178,64 +145,37 @@ void CottonGame::Draw()
 		ThePlayer.Draw();
 	}
 
-	for (std::list<Rock*>::iterator rock = rockList.begin(); rock != rockList.end(); rock++)
+	for (std::list<Raindrop*>::iterator Raindrop = RaindropList.begin(); Raindrop != RaindropList.end(); Raindrop++)
 	{
-		if ((*rock)->IsInUse() == true)
+		if ((*Raindrop)->IsInUse() == true)
 		{
-			(*rock)->Draw();
-		}
-	}
-
-	for (std::list<Bullet*>::iterator bullet = bulletList.begin(); bullet != bulletList.end(); bullet++)
-	{
-		if ((*bullet)->IsInUse() == true)
-		{
-			(*bullet)->Draw();
+			(*Raindrop)->Draw();
 		}
 	}
 	
-	//explosionManager.Draw();
 
 	Renderer::Get()->debugPrinter->Print(700,20,RGBTOCOLOR(255,255,255),"Score: %d",Score);
 
 	char text[32] = "";
 
-	for(int i=0;i<Players;i++)
+	/**for(int i=0;i<Players;i++)
 	{
 		strcat(text,"A");
-	}
+	}*/
 
 
-	Renderer::Get()->debugPrinter->Print(700,50,RGBTOCOLOR(255,255,255), text);
+	//Renderer::Get()->debugPrinter->Print(700,50,RGBTOCOLOR(255,255,255), text);
 }
 
 
-void CottonGame::CreateRocks()
+void CottonGame::CreateRain()
 {	
-#if false
-	rockList.Clear();
-	rockList.GetFree()->Init(Vector2(100,0),Rock::Size_big,Vector2(0,-1));
-	rockList.GetFree()->Init(Vector2(150,0),Rock::Size_big,Vector2(0,1));
-
-	rockList.GetFree()->Init(Vector2(550,0),Rock::Size_big,Vector2(0,-1));
-	rockList.GetFree()->Init(Vector2(500,0),Rock::Size_big,Vector2(0,1));
-#endif
-
-	std::list<Rock*>::iterator it = rockList.begin();
-	while (it != rockList.end())
-	{
-		Rock *pRock = (*it);
-		delete pRock;
-
-		it = rockList.erase(it);		
-	}
+	Raindrop *pDrop = new Raindrop();
+	RaindropList.push_back(pDrop);
+	pDrop->Init(0);
 
 
-	Rock *pRock = new Rock();
-	rockList.push_back(pRock);
-	pRock->Init(Vector2(100, 0), Rock::Size_big, Vector2(0, -1));
-
-	pRock = new Rock();
+	/**pRock = new Rock();
 	rockList.push_back(pRock);
 	pRock->Init(Vector2(150, 0), Rock::Size_big, Vector2(0, 1));
 
@@ -245,7 +185,7 @@ void CottonGame::CreateRocks()
 
 	pRock = new Rock();
 	rockList.push_back(pRock);
-	pRock->Init(Vector2(500, 0), Rock::Size_big, Vector2(0, 1));
+	pRock->Init(Vector2(500, 0), Rock::Size_big, Vector2(0, 1));*/
 }
 
 bool CottonGame::IsPlayerActive()
@@ -262,7 +202,7 @@ void CottonGame::PlacePlayer()
 void CottonGame::ResetScore()
 {
 	Score = 0;
-	Players = 3;
+	ThePlayer.playerScale = 40; // reset player scale back to normal
 }
 
 void CottonGame::GUIPrint(int x, int y,char* fmt)

@@ -42,7 +42,7 @@ bool Renderer::OnStartUp()
 		return false;
 	}
 
-	window = SDL_CreateWindow("title", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_OPENGL);
+	window = SDL_CreateWindow("title", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 60, 60, SDL_WINDOW_OPENGL);
 
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
@@ -51,7 +51,7 @@ bool Renderer::OnStartUp()
 
 	SDL_AddEventWatch(watch, NULL);
 
-	SetViewport(Viewport(0, 0, 800, 600));
+	SetViewport(Viewport(0, 0, 60, 60));
 	
 	return true;
 }
