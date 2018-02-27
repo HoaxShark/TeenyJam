@@ -25,7 +25,6 @@ void Player::Init()
 
 
 	playerScale = 40; // used to scale the image of the player and the collider
-	std::cout << "Playerscale: " << playerScale;
 	collider.Set(Position, (playerScale/4));
 	
 	//lastShotTime = 0;	
