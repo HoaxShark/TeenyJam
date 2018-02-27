@@ -52,7 +52,6 @@ void CottonGame::Init()
 	ThePlayer.Init();
 	bPlayerActive = false;
 
-	CreateRain();
 	ResetScore();	
 
 	//explosionManager.Clear();
@@ -107,11 +106,11 @@ void CottonGame::Update()
 	{
 		ThePlayer.OnCollided();
 		int oldScale = ThePlayer.GetPlayerScale(); // on colide reduce scale of player
-		oldScale -= 1;
+		oldScale -= 2;
 		ThePlayer.SetPlayerScale(oldScale);
 		//explosionManager.Add(ThePlayer.GetPosition(),ThePlayer.GetLineList());
 
-		bPlayerActive = false;
+		bPlayerActive = true;
 		//Players--;
 	}
 	std::list<Raindrop*>::iterator Raindrop = RaindropList.begin();

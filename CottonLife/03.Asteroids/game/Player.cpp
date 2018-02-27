@@ -3,6 +3,7 @@
 #include "../engine/Matrix.h"
 #include "../engine/Renderer.h"
 #include "../engine/Input.h"
+#include <iostream>
 
 Player::Player()
 {	
@@ -24,7 +25,8 @@ void Player::Init()
 
 
 	playerScale = 40; // used to scale the image of the player and the collider
-	collider.Set(Position, (playerScale/2));
+	std::cout << "Playerscale: " << playerScale;
+	collider.Set(Position, (playerScale/4));
 	
 	//lastShotTime = 0;	
 }

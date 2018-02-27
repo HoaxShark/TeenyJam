@@ -23,6 +23,7 @@ bool GameState_Attract::Update()
 	}
 	return State::Update();
 }
+
 void GameState_Attract::Draw()
 {
 	CottonGame::Get()->Draw();
@@ -70,7 +71,7 @@ void GameState_StartGame::Init()
 
 bool GameState_StartGame::Update()
 {
-	CottonGame::Get()->stateMachine.SetState(GameState_CreateRain::Label);
+	CottonGame::Get()->stateMachine.SetState(GameState_PlacePlayer::Label);
 	return true;
 }
 void GameState_StartGame::Draw()
@@ -162,25 +163,30 @@ void GameState_PlacePlayer::Exit()
 void GameState_Play::Init()
 {
 	TheTimer.Start();
+	int t1 = TheTimer.GetTime();
+	ThePlayer = new Player;
 }
 
 bool GameState_Play::Update()
 {	
-	CottonGame::Get()->Update();
-	float currentTime = TheTimer.GetTime();
-
-	if (TheRaindrop.GetDelay() <= currentTime)
-	{
-		CottonGame::Get()->CreateRain();
-		TheTimer.Stop();
-		TheTimer.Start();
-	}
-
-	
-	if(ThePlayer.GetPlayerScale() >= 2) // if player is too small move to end game
+	int playerScale = ThePlayer->GetPlayerScale();
+	if (playerScale <= 4) // if player is too small move to end game
 	{
 		CottonGame::Get()->stateMachine.SetState(GameState_GameOver::Label);
 	}
+
+	CottonGame::Get()->Update();
+	t2 = TheTimer.GetTime();
+
+	
+
+	if (TheRaindrop.GetDelay() <= (t1 + t2))
+	{
+		CottonGame::Get()->CreateRain();
+		t1 = t2;
+
+	}
+
 	/**else
 	{
 		if(CottonGame::Get()->IsPlayerActive() == false)

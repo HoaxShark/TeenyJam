@@ -55,9 +55,11 @@ public:
 class GameState_Play: public StateMachine::PausibleState
 {
 public:
-	Player ThePlayer;
+	Player* ThePlayer;
 	Timer TheTimer;
 	Raindrop TheRaindrop;
+	int t1;
+	int t2;
 	void Init();
 	bool Update();
 	void Draw();

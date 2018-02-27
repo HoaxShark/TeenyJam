@@ -57,7 +57,7 @@ Vector2 Raindrop::GetStartPosition()
 int Raindrop::GetDelay()
 {
 	Delay = rand() % 60;
-	return 0;
+	return Delay;
 }
 
 std::vector<Vector2> Raindrop::GetLineList()
